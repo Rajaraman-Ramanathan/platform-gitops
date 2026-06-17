@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
   - platform-project.yaml
-  - microbank-platform.yaml
+  - microbank-project.yaml
