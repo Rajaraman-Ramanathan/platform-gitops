@@ -7,14 +7,17 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   project: platform
-  source:
-    repoURL: https://github.com/Rajaraman-Ramanathan/microbank-gitops.git
+  sources:
+  - repoURL: https://github.com/Rajaraman-Ramanathan/platform-gitops.git
     targetRevision: dev
     path: platform/shared-infra/database/postgres/helm
     helm:
       releaseName: postgres
       valueFiles:
-        - values-dev.yaml
+        - $values/environments/dev/database/postgres/values.yaml
+  - repoURL: https://github.com/Rajaraman-Ramanathan/platform-gitops.git
+    targetRevision: dev
+    ref: values
   destination:
     server: https://microbank-dev-control-plane:6443
     namespace: postgres

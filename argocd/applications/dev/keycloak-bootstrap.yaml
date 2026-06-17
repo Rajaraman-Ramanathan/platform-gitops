@@ -4,13 +4,13 @@ metadata:
   name: keycloak-bootstrap
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   project: platform
   source:
-    repoURL: https://github.com/Rajaraman-Ramanathan/microbank-gitops.git
+    repoURL: https://github.com/Rajaraman-Ramanathan/platform-gitops.git
     targetRevision: dev
-    path: environments/dev/bootstrap/keycloak
+    path: environments/dev/identity/keycloak/bootstrap
   destination:
     server: https://microbank-dev-control-plane:6443
     namespace: keycloak
