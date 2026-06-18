@@ -12,7 +12,7 @@ spec:
     targetRevision: dev
     path: platform/dev-tools/maildev
   destination:
-    server: https://microbank-dev-control-plane:6443
+    name: microbank-dev-cluster
     namespace: maildev
   syncPolicy:
     automated:

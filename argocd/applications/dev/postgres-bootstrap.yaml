@@ -12,7 +12,7 @@ spec:
     targetRevision: dev
     path: environments/dev/database/postgres/bootstrap
   destination:
-    server: https://microbank-dev-control-plane:6443
+    name: microbank-dev-cluster
     namespace: postgres
   syncPolicy:
     automated:

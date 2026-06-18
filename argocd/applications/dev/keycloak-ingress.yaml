@@ -12,7 +12,7 @@ spec:
     targetRevision: dev
     path: platform/identity/keycloak/ingress
   destination:
-    server: https://microbank-dev-control-plane:6443
+    name: microbank-dev-cluster
     namespace: keycloak
   syncPolicy:
     automated:

@@ -12,7 +12,7 @@ spec:
     targetRevision: dev
     path: environments/dev/identity/keycloak/bootstrap
   destination:
-    server: https://microbank-dev-control-plane:6443
+    name: microbank-dev-cluster
     namespace: keycloak
   syncPolicy:
     automated:

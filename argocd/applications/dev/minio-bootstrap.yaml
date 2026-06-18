@@ -12,7 +12,7 @@ spec:
     targetRevision: dev
     path: environments/dev/storage/minio/bootstrap
   destination:
-    server: https://microbank-dev-control-plane:6443
+    name: microbank-dev-cluster
     namespace: minio
   syncPolicy:
     automated:

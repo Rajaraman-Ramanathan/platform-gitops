@@ -19,7 +19,7 @@ spec:
     targetRevision: dev
     ref: values
   destination:
-    server: https://microbank-dev-control-plane:6443
+    name: microbank-dev-cluster
     namespace: redis
   syncPolicy:
     automated:
