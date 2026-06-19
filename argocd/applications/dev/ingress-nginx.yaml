@@ -13,8 +13,8 @@ spec:
     path: platform/networking/ingress-nginx/helm
     helm:
       releaseName: ingress-nginx
-    valueFiles:
-      - $values/environments/dev/ingress/ingress-nginx/values.yaml
+      valueFiles:
+        - $values/environments/dev/ingress/ingress-nginx/values.yaml
   - repoURL: https://github.com/Rajaraman-Ramanathan/platform-gitops.git
     targetRevision: dev
     ref: values
