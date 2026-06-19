@@ -13,7 +13,7 @@ spec:
 
   destinations:
   - namespace: '*'
-    server: https://microbank-dev-control-plane:6443
+    name: microbank-dev-cluster
 
   # Workloads MUST NOT create cluster-scoped resources
   clusterResourceBlacklist:

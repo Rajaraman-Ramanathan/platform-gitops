@@ -16,7 +16,7 @@ spec:
     server: https://kubernetes.default.svc
 
   - namespace: '*'
-    server: https://microbank-dev-control-plane:6443
+    name: microbank-dev-cluster
 
   clusterResourceWhitelist:
   - group: '*'
