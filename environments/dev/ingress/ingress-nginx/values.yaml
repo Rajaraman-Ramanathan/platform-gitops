@@ -8,7 +8,7 @@ ingress-nginx:
       default: true
 
     service:
-      type: ClusterIP
+      type: LoadBalancer
 
     admissionWebhooks:
       enabled: true
