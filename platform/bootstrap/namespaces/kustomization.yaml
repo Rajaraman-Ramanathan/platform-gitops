@@ -9,3 +9,9 @@ resources:
 - keycloak.yaml
 - maildev.yaml
 - ingress-nginx.yaml
+- account.yaml
+- apigateway.yaml
+- auth.yaml
+- document.yaml
+- transaction.yaml
+- notification.yaml
