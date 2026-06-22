@@ -11,7 +11,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: auth.microbank.local
+  - host: auth.dev.microbankapp.com
     http:
       paths:
       - path: /
