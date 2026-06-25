@@ -1,0 +1,153 @@
+name: Reusable Build Workflow
+
+on:
+  workflow_call:
+    inputs:
+      runtime:
+        description: Runtime type
+        required: true
+        type: string
+      artifact-name:
+        description: Artifact name
+        required: true
+        type: string
+      java-version:
+        required: false
+        default: "21"
+        type: string
+      node-version:
+        required: false
+        default: "22"
+        type: string
+      python-version:
+        required: false
+        default: "3.13"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate Runtime
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate runtime
+        run: |
+          case "${{ inputs.runtime }}" in
+            springboot|nodejs|python)
+              echo "Supported runtime"
+              ;;
+            *)
+              echo "Unsupported runtime: ${{ inputs.runtime }}"
+              exit 1
+              ;;
+          esac
+
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      #################################################################
+      # Spring Boot
+      #################################################################
+
+      - name: Setup Java
+        if: inputs.runtime == 'springboot'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ inputs.java-version }}
+          cache: maven
+
+      - name: Build Spring Boot
+        if: inputs.runtime == 'springboot'
+        run: mvn -B clean verify
+
+      #################################################################
+      # NodeJS
+      #################################################################
+
+      - name: Setup NodeJS
+        if: inputs.runtime == 'nodejs'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+
+      - name: Install Dependencies
+        if: inputs.runtime == 'nodejs'
+        run: npm ci
+
+      - name: Build NodeJS
+        if: inputs.runtime == 'nodejs'
+        run: npm run build
+
+      - name: Test NodeJS
+        if: inputs.runtime == 'nodejs'
+        run: npm test
+
+      #################################################################
+      # Python
+      #################################################################
+
+      - name: Setup Python
+        if: inputs.runtime == 'python'
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install Python Dependencies
+        if: inputs.runtime == 'python'
+        run: |
+          python -m pip install --upgrade pip
+
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+          if [ -f requirements-dev.txt ]; then
+            pip install -r requirements-dev.txt
+          fi
+
+      - name: Run Python Tests
+        if: inputs.runtime == 'python'
+        run: |
+          pytest
+
+      #################################################################
+      # Package Artifacts
+      #################################################################
+
+      - name: Package Spring Boot Artifact
+        if: inputs.runtime == 'springboot'
+        run: |
+          mkdir -p artifacts
+          cp target/*.jar artifacts/
+
+      - name: Package NodeJS Artifact
+        if: inputs.runtime == 'nodejs'
+        run: |
+          mkdir -p artifacts
+          tar -czf artifacts/nodejs-build.tar.gz dist/
+
+      - name: Package Python Artifact
+        if: inputs.runtime == 'python'
+        run: |
+          mkdir -p artifacts
+          tar -czf artifacts/python-build.tar.gz .
+
+      #################################################################
+      # Upload Artifacts
+      #################################################################
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: artifacts/
+          retention-days: 7
